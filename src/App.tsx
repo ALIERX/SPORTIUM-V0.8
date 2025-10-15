@@ -1,3 +1,5 @@
+import { useAuth } from './lib/AuthContext';
+import AuthButtons from './components/AuthButtons';
 import { useState } from "react";
 import { Header } from "./components/Header";
 import { MobileNav } from "./components/MobileNav";
@@ -58,7 +60,17 @@ export default function App() {
     setSelectedAuctionId(null);
     setCurrentTab("auctions");
   };
-  
+  const { session, loading } = useAuth();
+if (loading) return <div>Caricamento…</div>;
+
+if (!session) {
+  return (
+    <main style={{ maxWidth: 420, margin: '80px auto' }}>
+      <h1>Accedi a SPORTIUM</h1>
+      <AuthButtons />
+    </main>
+  );
+}
   const renderContent = () => {
     switch (currentTab) {
       case "home":
